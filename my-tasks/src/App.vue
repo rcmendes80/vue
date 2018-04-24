@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import TodoList from "./TodoList";
+import TodoList from "./components/TodoList";
 export default {
   name: "app",
   components: {

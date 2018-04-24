@@ -1,9 +1,7 @@
 <template>
-  <div id="todo">
     <table>
         <todo-item v-for="(item, index) in items" :key="index" :item="item" @completedCheckHandler="updateCompletedTodoItemState" :index="index"/>
     </table>
-  </div>
 </template>
 
 <script>

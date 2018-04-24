@@ -8,7 +8,6 @@
             v-model="isChecked"
             @change="toggleCheckedState"
           />
-          Completed: {{item.completed}}
         </td>
   </tr>
 </template>
@@ -23,7 +22,7 @@ export default {
     };
   },
   methods: {
-    toggleCheckedState () {
+    toggleCheckedState() {
       this.$emit("completedCheckHandler", this.index, this.isChecked);
     }
   }

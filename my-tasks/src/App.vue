@@ -1,16 +1,19 @@
 <template>
   <div id="app">
     <h1>Todo List</h1>
+    <todo-add-form/>
     <todo-list :items="items" @update-todo="updateCompletedTodoItemState"></todo-list>
   </div>
 </template>
 
 <script>
 import TodoList from "./components/TodoList";
+import TodoAddForm from './components/TodoAddForm';
 export default {
   name: "app",
   components: {
-    "todo-list": TodoList
+    "todo-list": TodoList,
+    "todo-add-form": TodoAddForm
   },
   mounted() {
     fetch("http://localhost:9090/todos")
@@ -18,7 +21,6 @@ export default {
         return response.json();
       })
       .then(data => {
-        console.log(data);
         this.items = data;
       });
   },

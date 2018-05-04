@@ -1,6 +1,6 @@
 <template>
     <table>
-        <todo-item v-for="(item, index) in items" :key="index" :item="item" @completedCheckHandler="updateCompletedTodoItemState" :index="index"/>
+        <todo-item v-for="(item, index) in items" :key="index" :item="item" :index="index"/>
     </table>
 </template>
 
@@ -14,12 +14,13 @@ export default {
     "todo-item": TodoItem
   },
   data() {
-    return {};
+    return {
+    };
+  },
+  mounted() {
   },
   methods: {
-    updateCompletedTodoItemState(id, isChecked) {
-      this.$emit("update-todo", id, isChecked);
-    }
+  
   }
 };
 </script>

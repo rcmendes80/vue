@@ -2,13 +2,14 @@
   <div id="app">
     <h1>Todo List</h1>
     <todo-add-form/>
-    <todo-list :items="items" @update-todo="updateCompletedTodoItemState"></todo-list>
+    <todo-list :items="items"></todo-list>
   </div>
 </template>
 
 <script>
+import store from "./components/store";
 import TodoList from "./components/TodoList";
-import TodoAddForm from './components/TodoAddForm';
+import TodoAddForm from "./components/TodoAddForm";
 export default {
   name: "app",
   components: {
@@ -21,6 +22,7 @@ export default {
         return response.json();
       })
       .then(data => {
+        store.setData(data);
         this.items = data;
       });
   },
@@ -30,9 +32,6 @@ export default {
     };
   },
   methods: {
-    updateCompletedTodoItemState(id, isChecked) {
-      this.items[id].completed = isChecked;
-    }
   }
 };
 </script>

@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import store from "./store";
+
 export default {
   name: "TodoItem",
   props: ["item", "index"],
@@ -23,7 +25,7 @@ export default {
   },
   methods: {
     toggleCheckedState() {
-      this.$emit("completedCheckHandler", this.index, this.isChecked);
+      store.setCompletedStatus(this.index, this.isChecked)
     }
   }
 };

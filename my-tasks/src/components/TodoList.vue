@@ -1,6 +1,14 @@
 <template>
     <table>
+      <thead>
+        <th>Name</th>
+        <th>Due</th>
+        <th>Completed</th>
+      </thead>
+      <tbody>
         <todo-item v-for="(item, index) in items" :key="index" :item="item" :index="index"/>
+      </tbody>
+      <tfoot><td colspan="2">Total of Todos:</td><td>{{$store.state.list.length}}</td></tfoot>
     </table>
 </template>
 
@@ -14,14 +22,10 @@ export default {
     "todo-item": TodoItem
   },
   data() {
-    return {
-    };
+    return {};
   },
-  mounted() {
-  },
-  methods: {
-  
-  }
+  mounted() {},
+  methods: {}
 };
 </script>
 

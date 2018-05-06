@@ -23,7 +23,8 @@ export default {
   },
   methods: {
     toggleCheckedState() {
-      // store.setCompletedStatus(this.index, this.isChecked)
+      console.log("[",this.index, "]:", this.isChecked);
+      this.$store.commit('updateTodoStatus', {index: this.index, isChecked: this.isChecked});
     }
   }
 };

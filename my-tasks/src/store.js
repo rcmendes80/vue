@@ -22,8 +22,9 @@ const mutations = {
   loadTodoList(state, todos) {
     state.list = todos;
   },
-  addTodo(state, todo) {
-    state.list = [...state.list, todo];
+  addTodo: (state, todo) => state.list = [...state.list, todo],
+  updateTodoStatus: (state, {index, isChecked}) => {
+    state.list[index].completed = isChecked;
   }
 }
 

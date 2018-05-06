@@ -7,9 +7,10 @@
 </template>
 
 <script>
-import store from "./components/store";
 import TodoList from "./components/TodoList";
 import TodoAddForm from "./components/TodoAddForm";
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   name: "app",
   components: {
@@ -22,16 +23,16 @@ export default {
         return response.json();
       })
       .then(data => {
-        store.setData(data);
-        this.items = data;
+        this.$store.commit("loadTodoList", data);
       });
   },
   data() {
-    return {
-      items: []
-    };
+    return {};
   },
-  methods: {
+  computed: {
+    items() {
+      return this.$store.state.list;
+    }
   }
 };
 </script>

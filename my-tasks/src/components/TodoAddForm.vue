@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import store from "./store";
+
 
 export default {
   name: "TodoAddForm",
@@ -30,7 +30,13 @@ export default {
       return today.toISOString().slice(0, 16);
     },
     addTodo() {
-      store.addTodo({name: this.title, due: this.due, completed : this.completed});
+      this.$store.commit('addTodo', {name: this.title, due: this.due, completed : this.completed});
+      this.clearForm();
+    },
+    clearForm() {
+      this.title ="";
+      this.due = this.getCurrentDateTime();
+      this.completed = false;
     }
   }
 };

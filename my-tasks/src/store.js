@@ -19,8 +19,14 @@ const mutations = {
   increment: state => state.count++,
   increment2: (state, n) => state.count +=n,
   decrement: state => state.count--,
-  loadTodoList(state, todos) {
-    state.list = todos;
+  loadTodoList(state) {
+    fetch("http://localhost:9090/todos")
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        state.list = data;
+      });
   },
   addTodo: (state, todo) => state.list = [...state.list, todo],
   updateTodoStatus: (state, {index, isChecked}) => {

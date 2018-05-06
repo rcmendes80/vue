@@ -18,13 +18,7 @@ export default {
     "todo-add-form": TodoAddForm
   },
   mounted() {
-    fetch("http://localhost:9090/todos")
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
-        this.$store.commit("loadTodoList", data);
-      });
+    this.$store.commit("loadTodoList");
   },
   data() {
     return {};

@@ -17,15 +17,21 @@ import TodoItem from "./TodoItem";
 
 export default {
   name: "TodoList",
-  props: ["items"],
+ // props: ["items"],
   components: {
     "todo-item": TodoItem
   },
   data() {
-    return {};
+    return {}
   },
   mounted() {},
-  methods: {}
+  methods: {},
+  computed: {
+    items() {
+      return this.$store.state.list;
+    }
+  }
+  
 };
 </script>
 

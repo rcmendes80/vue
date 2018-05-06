@@ -2,7 +2,7 @@
   <div id="app">
     <h1>Todo List</h1>
     <todo-add-form/>
-    <todo-list :items="items"></todo-list>
+    <todo-list/>
   </div>
 </template>
 

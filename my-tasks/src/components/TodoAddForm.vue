@@ -1,27 +1,36 @@
 <template>
     <div class="add-form">
       <label>Title</label>
-      <input/>
+      <input v-model="title" placeholder="Inform Todo title here."/>
       <label>Due</label>
-      <input/>
+      <input  v-model="due" type="datetime-local"/>
       <label>Is Completed</label>
-      <input type="checkbox"/>
-      <button>Add</button>
+      <input  v-model="completed" type="checkbox"/>
+      <button @click="addTodo">Add</button>
     </div>
 </template>
 
 <script>
+import store from "./store";
 
 export default {
   name: "TodoAddForm",
   components: {
   },
   data() {
-    return {};
+    return {
+      title :"",
+      due: this.getCurrentDateTime(),
+      completed : false,
+    };
   },
   methods: {
-    updateCompletedTodoItemState(id, isChecked) {
-      this.$emit("update-todo", id, isChecked);
+    getCurrentDateTime() {
+      var today = new Date();
+      return today.toISOString().slice(0, 16);
+    },
+    addTodo() {
+      store.addTodo({name: this.title, due: this.due, completed : this.completed});
     }
   }
 };

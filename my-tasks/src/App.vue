@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <h1>Todo List</h1>
+    <em>{{this.$store.state.errors}}</em>
     <todo-add-form/>
     <todo-list/>
   </div>

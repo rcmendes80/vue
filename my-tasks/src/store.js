@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import {HTTP} from './http-commons.js';
 
 Vue.use(Vuex)
 
@@ -7,6 +8,7 @@ Vue.use(Vuex)
 // each Vuex instance is just a single state tree.
 const state = {
   list:[],
+  errors:[],
   count:0
 }
 
@@ -20,15 +22,29 @@ const mutations = {
   increment2: (state, n) => state.count +=n,
   decrement: state => state.count--,
   loadTodoList(state) {
-    fetch("http://localhost:9090/todos")
+    HTTP.get("todos")
       .then(response => {
-        return response.json();
+        state.list = response.data;
       })
-      .then(data => {
-        state.list = data;
+      .catch(e => {
+        console.log(e)
+        state.errors.push(e);
       });
   },
-  addTodo: (state, todo) => state.list = [...state.list, todo],
+  addTodo: (state, todo) => {
+    state.list = [...state.list, todo];
+    let todoAsJSON = JSON.stringify(todo);
+    console.log(todoAsJSON)
+    HTTP.post(`todos`, {
+      body: todoAsJSON
+    })
+    .then(response => {console.log("response[POST]:", response)})
+    .catch(e => {
+      state.errors.push(e)
+    })
+
+
+  },
   updateTodoStatus: (state, {index, isChecked}) => {
     state.list[index].completed = isChecked;
   }

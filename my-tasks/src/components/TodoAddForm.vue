@@ -26,8 +26,9 @@ export default {
   },
   methods: {
     getCurrentDateTime() {
-      var today = new Date();
-      return today.toISOString().slice(0, 16);
+      let today = new Date();
+      let parsedDatetime = today.toISOString().slice(0, 16);
+      return parsedDatetime;
     },
     addTodo() {
       this.$store.commit('addTodo', {name: this.title, due: this.due, completed : this.completed});

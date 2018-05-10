@@ -28,10 +28,13 @@ export default {
     getCurrentDateTime() {
       let today = new Date();
       let parsedDatetime = today.toISOString().slice(0, 16);
+      
       return parsedDatetime;
     },
     addTodo() {
-      this.$store.commit('addTodo', {name: this.title, due: this.due, completed : this.completed});
+      let parsedDatetime = new Date(this.due).toISOString();
+      console.log("Date-time: ", parsedDatetime);
+      this.$store.commit('addTodo', {name: this.title, due: parsedDatetime, completed : this.completed});
       this.clearForm();
     },
     clearForm() {

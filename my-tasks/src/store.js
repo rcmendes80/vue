@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {HTTP} from './http-commons.js';
-
+import axios from 'axios';
 Vue.use(Vuex)
 
 // root state object.
@@ -35,7 +35,10 @@ const mutations = {
     state.list = [...state.list, todo];
     let todoAsJSON = JSON.stringify(todo);
     console.log(todoAsJSON)
-    HTTP.post(`todos`, {
+    // HTTP.post(`todos`, {
+    //   body: todoAsJSON
+    // })
+    axios.post(`http://localhost:9090/todos`, {
       body: todoAsJSON
     })
     .then(response => {console.log("response[POST]:", response)})
@@ -47,6 +50,30 @@ const mutations = {
   },
   updateTodoStatus: (state, {index, isChecked}) => {
     state.list[index].completed = isChecked;
+  },
+
+  addTodo2 : (state, todo) => {
+     // get new XHR object
+  let newXHR = new XMLHttpRequest();
+  
+   
+  // go to http://requestb.in/1k6rql51?inspect to view your request!
+  newXHR.open( 'POST', 'http://localhost:9090/todos' );
+  //             ^-- IMPORTANT: to send data to the server with it appearing in the url use 'POST'
+  
+
+  // the object below can be crafted in any fashion. In the end you want an Object Literal with your data stored on it.
+  let todoAsJSON = JSON.stringify(todo);
+    console.log(todoAsJSON)
+  
+  // HTTP Protocol can only work with strings when transmitting data over the internet.
+  // JSON is a class and .stringify is a class-method. We use it to format
+  // the Javascript Data, which lives in memory, to JSON string.
+  var formattedJsonData = JSON.stringify( todoAsJSON  );
+  // send it off
+  newXHR.send( formattedJsonData );
+
+  console.log("response [addtodo2]: ", newXHR.responseText)
   }
 }
 

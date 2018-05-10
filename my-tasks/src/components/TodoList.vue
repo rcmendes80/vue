@@ -1,6 +1,7 @@
 <template>
     <table>
       <thead>
+        <th>ID</th>
         <th>Name</th>
         <th>Due</th>
         <th>Completed</th>
@@ -8,7 +9,7 @@
       <tbody>
         <todo-item v-for="(item, index) in items" :key="index" :item="item" :index="index"/>
       </tbody>
-      <tfoot><td colspan="2">Total of Todos:</td><td>{{$store.state.list.length}}</td></tfoot>
+      <tfoot><td colspan="3">Total of Todos:</td><td>{{$store.state.list.length}}</td></tfoot>
     </table>
 </template>
 
@@ -17,12 +18,12 @@ import TodoItem from "./TodoItem";
 
 export default {
   name: "TodoList",
- // props: ["items"],
+  // props: ["items"],
   components: {
     "todo-item": TodoItem
   },
   data() {
-    return {}
+    return {};
   },
   mounted() {},
   methods: {},
@@ -31,7 +32,6 @@ export default {
       return this.$store.state.list;
     }
   }
-  
 };
 </script>
 

@@ -11,34 +11,35 @@
 </template>
 
 <script>
-
-
 export default {
   name: "TodoAddForm",
-  components: {
-  },
+  components: {},
   data() {
     return {
-      title :"",
+      title: "",
       due: this.getCurrentDateTime(),
-      completed : false,
+      completed: false
     };
   },
   methods: {
     getCurrentDateTime() {
       let today = new Date();
       let parsedDatetime = today.toISOString().slice(0, 16);
-      
+
       return parsedDatetime;
     },
     addTodo() {
       let parsedDatetime = new Date(this.due).toISOString();
       console.log("Date-time: ", parsedDatetime);
-      this.$store.commit('addTodo', {name: this.title, due: parsedDatetime, completed : this.completed});
+      this.$store.commit("addTodo", {
+        name: this.title,
+        due: parsedDatetime,
+        completed: this.completed
+      });
       this.clearForm();
     },
     clearForm() {
-      this.title ="";
+      this.title = "";
       this.due = this.getCurrentDateTime();
       this.completed = false;
     }

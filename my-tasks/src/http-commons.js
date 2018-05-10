@@ -5,5 +5,6 @@ export const HTTP = axios.create({
   headers: {
     //Authorization: 'Bearer {token}'
     //"Access-Control-Allow-Origin": "*"
+    "Content-Type": "application/json"
   }
 })

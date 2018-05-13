@@ -27,7 +27,6 @@ const mutations = {
         state.list = response.data;
       })
       .catch(e => {
-        console.log(e)
         state.errors.push(e);
       });
   },
@@ -35,8 +34,6 @@ const mutations = {
     let todoAsJSON = JSON.stringify(todo);
     HTTP.post(`todos`, todoAsJSON)
       .then(response => {
-        console.log("response[POST][location]:", response.headers['location']);
-        console.log("response[POST][data]:", response.data);
         if (response.status == 201) {
           state.list = [...state.list, response.data];
         }
@@ -47,12 +44,45 @@ const mutations = {
 
 
   },
-  updateTodoStatus: (state, { index, isChecked }) => {
-    state.list[index].completed = isChecked;
+  updateTodoStatus: (state, { todo, isChecked }) => {
+    todo.completed = isChecked;
+    let todoAsJSON = JSON.stringify(todo);
+    HTTP.put("todos/" + todo.id, todoAsJSON)
+      .then(response => {
+        if (response.status != 204) {
+          todo.completed = !isChecked;
+        }
+      })
+      .catch(e => {
+        state.errors.push(e)
+      })
+
+
+  },
+  deleteTodo: (state, id) => {
+    let index = getTodoIndexByID(state, id);
+
+    HTTP.delete("todos/" + id)
+      .then(response => {
+        if (response.status == 204) {
+          state.list.splice(index, 1);
+        }
+      })
+      .catch(e => {
+        state.errors.push(e)
+      })
   },
 }
 
+function getTodoIndexByID(state, id) {
+  return state.list.findIndex((element, i) => {
+    if (element.id === id) {
+      return true;
+    }
 
+    return false
+  });
+}
 
 
 

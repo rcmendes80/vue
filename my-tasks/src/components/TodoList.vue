@@ -1,16 +1,18 @@
 <template>
-    <table>
-      <thead>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Due</th>
-        <th>Completed</th>
-      </thead>
-      <tbody>
-        <todo-item v-for="(item, index) in items" :key="index" :item="item" :index="index"/>
-      </tbody>
-      <tfoot><td colspan="3">Total of Todos:</td><td>{{$store.state.list.length}}</td></tfoot>
-    </table>
+  <div>
+    <div class="columns">
+      <div class="column">No</div>
+      <div class="column">ID</div>
+      <div class="column">Name</div>
+      <div class="column">Due</div>
+      <div class="column">Completed</div>
+    </div>
+    <todo-item v-for="(item, index) in items" :key="index" :item="item" :index="index"/>
+    <div class="columns">
+      <div class="column">Total of Todos:</div>
+      <div class="column">{{$store.state.list.length}}</div>
+    </div>
+  </div>
 </template>
 
 <script>

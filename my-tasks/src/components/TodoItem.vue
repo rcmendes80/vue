@@ -1,17 +1,19 @@
 <template>
-  <tr>
-    <td>{{item.id}}</td>
-    <td>{{item.name}}</td>
-    <td>{{item.due | formatDatetime}}</td>
-    <td>
-      <input
+<div class="columns" @mouseover="highlight">
+  <div class="column">{{index + 1}}</div>
+  <div class="column">{{item.id}}</div>
+  <div class="column">{{item.name}}</div>
+  <div class="column">{{item.due | formatDatetime}}</div>
+  <div class="column">
+    <input
         type="checkbox"
         v-model="isChecked"
         @change="toggleCheckedState"
-      />
-      <button @click="deleteTodo">X</button>
-    </td>
-  </tr>
+    />
+    <button @click="deleteTodo">X</button></div>
+</div>
+
+
 </template>
 
 <script>
@@ -32,7 +34,8 @@ export default {
     },
     deleteTodo() {
       this.$store.commit("deleteTodo", this.item.id);
-    }
+    },
+    highlight() {}
   },
   filters: {
     formatDatetime(value) {

@@ -1,14 +1,17 @@
 <template>
-  <section id="app" class="section">
-    <div class="container">
-      <h1 class="title">
+  <section id="app" class="hero">
+    <div class="hero-body">
+      <div class="container">
+      <h1 class="title has-background-primary has-text-white">
         Todo List
       </h1>
       <p class="subtitle">
         <em>{{this.$store.state.errors}}</em>
       </p>
       <todo-add-form/>
+      <br/>
       <todo-list/>
+      </div>
     </div>
   </section>
 </template>

@@ -1,12 +1,29 @@
 <template>
-    <div class="add-form">
-      <label>Title</label>
-      <input v-model="title" placeholder="Inform Todo title here."/>
-      <label>Due</label>
-      <input  v-model="due" type="datetime-local"/>
-      <label>Is Completed</label>
-      <input  v-model="completed" type="checkbox"/>
-      <button @click="addTodo">Add</button>
+    <div class="container has-background-light">
+      <div class="field">
+        <label class="label">Title</label>
+        <input class="input" v-model="title" placeholder="Inform Todo title here."/>
+      </div>
+      <div class="field">
+        <label class="label">Due</label>
+        <input class="input" v-model="due" type="datetime-local"/>
+      </div>
+      <div class="field">
+        <div class="control">
+          <label class="checkbox">
+            <input type="checkbox"  v-model="completed" />
+            Is Completed
+          </label>
+        </div>
+      </div>
+      <div class="field is-grouped">
+        <div class="control">
+          <button @click="addTodo" class="button is-link">Add</button>
+        </div>
+        <div class="control">
+          <button class="button is-danger">Cancel</button>
+        </div>
+      </div>
     </div>
 </template>
 
@@ -48,7 +65,4 @@ export default {
 </script>
 
 <style scoped>
-.add-form {
-  display: inline;
-}
 </style>

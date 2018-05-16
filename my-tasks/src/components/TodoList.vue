@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="columns">
+    <div class="columns has-background-warning has-text-weight-bold">
       <div class="column">No</div>
       <div class="column">ID</div>
       <div class="column">Name</div>

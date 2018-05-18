@@ -1,18 +1,28 @@
 <template>
-  <div>
-    <div class="columns has-background-warning has-text-weight-bold">
-      <div class="column">No</div>
-      <div class="column">ID</div>
-      <div class="column">Name</div>
-      <div class="column">Due</div>
-      <div class="column">Completed</div>
+  <section class="section">
+    <div class="container">
+      <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Due</th>
+            <th>Completed</th>
+          </tr>
+        </thead>
+        <tbody>
+          <todo-item v-for="(item, index) in items" :key="index" :item="item" :index="index"/>
+        </tbody>
+       <tfoot> 
+          
+        </tfoot>
+      </table>
     </div>
-    <todo-item v-for="(item, index) in items" :key="index" :item="item" :index="index"/>
-    <div class="columns">
-      <div class="column">Total of Todos:</div>
-      <div class="column">{{$store.state.list.length}}</div>
+    <div>
+      <em>Total of Todos: {{$store.state.list.length}}</em>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>

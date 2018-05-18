@@ -1,17 +1,17 @@
 <template>
-<div class="columns" @mouseover="highlight">
-  <div class="column">{{index + 1}}</div>
-  <div class="column">{{item.id}}</div>
-  <div class="column">{{item.name}}</div>
-  <div class="column">{{item.due | formatDatetime}}</div>
-  <div class="column">
+<tr @mouseover="highlight">
+  <td>{{index + 1}}</td>
+  <td>{{item.id}}</td>
+  <td>{{item.name}}</td>
+  <td>{{item.due | formatDatetime}}</td>
+  <td>
     <input
         type="checkbox"
         v-model="isChecked"
         @change="toggleCheckedState"
     />
-    <button @click="deleteTodo">X</button></div>
-</div>
+    <button @click="deleteTodo">X</button></td>
+</tr>
 
 
 </template>

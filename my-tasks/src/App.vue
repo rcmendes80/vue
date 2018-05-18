@@ -1,19 +1,25 @@
 <template>
-  <section id="app" class="hero">
-    <div class="hero-body">
-      <div class="container">
-      <h1 class="title has-background-primary has-text-white">
-        Todo List
-      </h1>
-      <p class="subtitle">
-        <em>{{this.$store.state.errors}}</em>
-      </p>
-      <todo-add-form/>
-      <br/>
-      <todo-list/>
+  <div  id="app">
+    <section class="hero is-primary">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title is-size-2 ">
+            Todo List
+          </h1>
+          <p class="subtitle">
+            <em>{{this.$store.state.errors}}</em>
+          </p>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+    <section class="section">
+      <div class="container">  
+        <todo-add-form/>
+        <br/>
+        <todo-list/>
+      </div>
+    </section>
+  </div>    
 </template>
 
 <script>

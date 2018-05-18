@@ -1,12 +1,16 @@
 <template>
-    <div class="container has-background-light">
+    <div class="box">
       <div class="field">
         <label class="label">Title</label>
-        <input class="input" v-model="title" placeholder="Inform Todo title here."/>
+        <div class="control">
+          <input class="input" v-model="title" placeholder="Inform Todo title here."/>
+        </div>
       </div>
       <div class="field">
         <label class="label">Due</label>
-        <input class="input" v-model="due" type="datetime-local"/>
+        <div class="control">
+          <input class="input" v-model="due" type="datetime-local"/>
+        </div>
       </div>
       <div class="field">
         <div class="control">
@@ -65,4 +69,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>

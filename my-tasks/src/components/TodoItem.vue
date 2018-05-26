@@ -1,5 +1,5 @@
 <template>
-<tr @mouseover="highlight">
+<tr>
   <td>{{index + 1}}</td>
   <td>{{item.id}}</td>
   <td>{{item.name}}</td>
@@ -34,8 +34,7 @@ export default {
     },
     deleteTodo() {
       this.$store.commit("deleteTodo", this.item.id);
-    },
-    highlight() {}
+    }
   },
   filters: {
     formatDatetime(value) {
@@ -48,5 +47,4 @@ export default {
 </script>
 
 <style>
-
 </style>

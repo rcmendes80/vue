@@ -15,7 +15,6 @@
     <section class="section">
       <div class="container">  
         <todo-add-form/>
-        <br/>
         <todo-list/>
       </div>
     </section>
@@ -48,5 +47,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

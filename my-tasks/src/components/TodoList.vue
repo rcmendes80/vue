@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <div class="container">
+    <div class="box">
       <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
         <thead>
           <tr>
@@ -21,24 +21,44 @@
     </div>
     <div>
       <em>Total of Todos: {{$store.state.list.length}}</em>
+      <button @click="showConfirmDeleteModal">show</button>
     </div>
+    <confirm-cancel-modal title="Confirm Todo deletion?" body="Testing Body" :show="showDeleteTodoModal" @confirm="confirmed" @cancel="cancelled" @close="closed"/>
   </section>
 </template>
 
 <script>
 import TodoItem from "./TodoItem";
+import ConfirmCancelModal from "./ConfirmCancelModal";
 
 export default {
   name: "TodoList",
   // props: ["items"],
   components: {
-    "todo-item": TodoItem
+    "todo-item": TodoItem,
+    "confirm-cancel-modal": ConfirmCancelModal
   },
   data() {
-    return {};
+    return {
+      showDeleteTodoModal: false
+    };
   },
   mounted() {},
-  methods: {},
+  methods: {
+    showConfirmDeleteModal() {
+      this.showDeleteTodoModal = true;
+    },
+    confirmed() {
+      console.log("[", new Date().toJSON(), "] Confirm event captured!");
+      this.closed();
+    },
+    closed() {
+      this.showDeleteTodoModal = false;
+    },
+    cancelled() {
+      this.closed();
+    }
+  },
   computed: {
     items() {
       return this.$store.state.list;
@@ -48,5 +68,4 @@ export default {
 </script>
 
 <style>
-
 </style>

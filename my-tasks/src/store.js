@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { HTTP } from './http-commons.js';
+import {
+  HTTP
+} from './http-commons.js';
 import axios from 'axios';
 Vue.use(Vuex)
 
@@ -9,7 +11,12 @@ Vue.use(Vuex)
 const state = {
   list: [],
   errors: [],
-  count: 0
+  count: 0,
+  editedTodo: {
+    name: '',
+    due: new Date(),
+    completed: false
+  },
 }
 
 // mutations are operations that actually mutates the state.
@@ -44,7 +51,10 @@ const mutations = {
 
 
   },
-  updateTodoStatus: (state, { todo, isChecked }) => {
+  updateTodoStatus: (state, {
+    todo,
+    isChecked
+  }) => {
     todo.completed = isChecked;
     let todoAsJSON = JSON.stringify(todo);
     HTTP.put("todos/" + todo.id, todoAsJSON)
@@ -72,6 +82,24 @@ const mutations = {
         state.errors.push(e)
       })
   },
+  updateTodo: (state, id) => {
+    let index = getTodoIndexByID(state, id);
+
+    HTTP.put("todos/" + id)
+      .then(response => {
+        let status = response.status;
+        if (status == 200 || status == 204) {
+          //state.list.splice(index, 1);
+          console.log("Update com sucesso!")
+        }
+      })
+      .catch(e => {
+        state.errors.push(e)
+      })
+  },
+  editTodo: (state, item) => {
+
+  },
 }
 
 function getTodoIndexByID(state, id) {
@@ -94,14 +122,23 @@ function getTodoIndexByID(state, id) {
 // actions are functions that cause side effects and can involve
 // asynchronous operations.
 const actions = {
-  increment: ({ commit }) => commit('increment'),
-  decrement: ({ commit }) => commit('decrement'),
-  incrementIfOdd({ commit, state }) {
+  increment: ({
+    commit
+  }) => commit('increment'),
+  decrement: ({
+    commit
+  }) => commit('decrement'),
+  incrementIfOdd({
+    commit,
+    state
+  }) {
     if ((state.count + 1) % 2 === 0) {
       commit('increment')
     }
   },
-  incrementAsync({ commit }) {
+  incrementAsync({
+    commit
+  }) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         commit('increment')
@@ -109,7 +146,10 @@ const actions = {
       }, 1000)
     })
   },
-  loadTodoList({ commit, state }) {
+  loadTodoList({
+    commit,
+    state
+  }) {
 
   }
 }

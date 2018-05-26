@@ -7,7 +7,7 @@
         <button class="delete" aria-label="close" @click="performClose"></button>
       </header>
       <section class="modal-card-body">
-        {{body}}
+       <span v-html="body"></span>
       </section>
       <footer class="modal-card-foot">
         <button class="button is-success" @click="performOK">Ok</button>

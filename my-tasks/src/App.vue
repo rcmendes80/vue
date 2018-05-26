@@ -1,14 +1,14 @@
 <template>
   <div  id="app">
-    <section class="hero is-primary">
+    <section class="hero is-medium is-dark is-bold">
       <div class="hero-body">
         <div class="container">
-          <h1 class="title is-size-2 ">
+          <h1 class="title">
             Todo List
           </h1>
-          <p class="subtitle">
-            <em>{{this.$store.state.errors}}</em>
-          </p>
+          <h2 class="subtitle">
+            A simple todo list
+          </h2>
         </div>
       </div>
     </section>

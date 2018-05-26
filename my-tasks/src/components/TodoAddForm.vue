@@ -22,10 +22,10 @@
       </div>
       <div class="field is-grouped">
         <div class="control">
-          <button @click="addTodo" class="button is-link">Add</button>
+          <button @click="addTodo" class="button is-primary is-outlined">Add</button>
         </div>
         <div class="control">
-          <button class="button is-danger">Cancel</button>
+          <button class="button">Cancel</button>
         </div>
       </div>
     </div>
@@ -69,5 +69,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

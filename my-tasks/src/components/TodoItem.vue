@@ -10,7 +10,21 @@
         v-model="isChecked"
         @change="toggleCheckedState"
     />
-    <button @click="deleteTodo">X</button></td>
+  </td>
+  <td>  
+    <a class="button is-warning is-outlined" @click="editTodo">
+      <span>Edit</span>
+      <span class="icon is-small">
+        <i class="fas fa-edit"></i>
+      </span>
+    </a>
+    <a class="button is-danger is-outlined" @click="deleteTodo">
+      <span>Delete</span>
+      <span class="icon is-small">
+        <i class="fas fa-times"></i>
+      </span>
+    </a>
+  </td>
 </tr>
 
 
@@ -33,7 +47,24 @@ export default {
       });
     },
     deleteTodo() {
-      this.$store.commit("deleteTodo", this.item.id);
+      let fnDelete = () => {
+        this.$store.commit("deleteTodo", this.item.id);
+      };
+      this.$emit("delete", {
+        id: this.item.id,
+        name: this.item.name,
+        deleteFn: fnDelete
+      });
+    },
+    editTodo() {
+      // let fnUpdate = () => {
+      //   this.$store.commit("updateTodo", this.item);
+      // };
+      // this.$emit("edit", {
+      //   todo: this.item,
+      //   updateFn: fnUpdate
+      // });
+      this.$store.commit("updateTodo", this.item);
     }
   },
   filters: {

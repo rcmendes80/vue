@@ -9,10 +9,11 @@
             <th>Name</th>
             <th>Due</th>
             <th>Completed</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <todo-item v-for="(item, index) in items" :key="index" :item="item" :index="index"/>
+          <todo-item v-for="(item, index) in items" :key="index" :item="item" :index="index"  @delete="showConfirmDeleteModal" />
         </tbody>
        <tfoot> 
           
@@ -21,15 +22,16 @@
     </div>
     <div>
       <em>Total of Todos: {{$store.state.list.length}}</em>
-      <button @click="showConfirmDeleteModal">show</button>
     </div>
-    <confirm-cancel-modal title="Confirm Todo deletion?" body="Testing Body" :show="showDeleteTodoModal" @confirm="confirmed" @cancel="cancelled" @close="closed"/>
+    <confirm-cancel-modal :title="modalTitle" :body="modalBody" :show="showDeleteTodoModal" @confirm="confirmed" @cancel="cancelled" @close="closed"/>
   </section>
 </template>
 
 <script>
 import TodoItem from "./TodoItem";
 import ConfirmCancelModal from "./ConfirmCancelModal";
+
+const DEFAULT_DELETE_MODAL_TITLE = "Confirm Todo deletion?";
 
 export default {
   name: "TodoList",
@@ -40,16 +42,22 @@ export default {
   },
   data() {
     return {
-      showDeleteTodoModal: false
+      showDeleteTodoModal: false,
+      modalBody: "Testing Body",
+      modalTitle: DEFAULT_DELETE_MODAL_TITLE,
+      modalDeleteFunction: () => {}
     };
   },
   mounted() {},
   methods: {
-    showConfirmDeleteModal() {
+    showConfirmDeleteModal({ id, name, deleteFn }) {
+      let msg = `<div><span class="has-text-info has-text-weight-bold">ID: </span>${id}</div><div><span class="has-text-info has-text-weight-bold">Name:  </span>${name}</div>`;
+      this.modalBody = msg;
+      this.modalDeleteFunction = deleteFn;
       this.showDeleteTodoModal = true;
     },
     confirmed() {
-      console.log("[", new Date().toJSON(), "] Confirm event captured!");
+      this.modalDeleteFunction();
       this.closed();
     },
     closed() {
@@ -67,5 +75,5 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 </style>

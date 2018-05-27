@@ -19,7 +19,6 @@ function getCurrentDateTime() {
 const state = {
   list: [],
   errors: [],
-  count: 0,
   editedTodo: {
     name: '',
     due: getCurrentDateTime(),
@@ -34,9 +33,6 @@ const state = {
 // mutations must be synchronous and can be recorded by plugins
 // for debugging purposes.
 const mutations = {
-  increment: state => state.count++,
-  increment2: (state, n) => state.count += n,
-  decrement: state => state.count--,
   loadTodoList(state) {
     HTTP.get("todos")
       .then(response => {
@@ -152,30 +148,6 @@ function getTodoIndexByID(state, id) {
 // actions are functions that cause side effects and can involve
 // asynchronous operations.
 const actions = {
-  increment: ({
-    commit
-  }) => commit('increment'),
-  decrement: ({
-    commit
-  }) => commit('decrement'),
-  incrementIfOdd({
-    commit,
-    state
-  }) {
-    if ((state.count + 1) % 2 === 0) {
-      commit('increment')
-    }
-  },
-  incrementAsync({
-    commit
-  }) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        commit('increment')
-        resolve()
-      }, 1000)
-    })
-  },
   loadTodoList({
     commit,
     state

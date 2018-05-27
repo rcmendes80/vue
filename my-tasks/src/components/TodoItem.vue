@@ -12,7 +12,7 @@
     />
   </td>
   <td>  
-    <a class="button is-warning is-outlined" @click="editTodo">
+    <a class="button is-link is-outlined" @click="editTodo">
       <span>Edit</span>
       <span class="icon is-small">
         <i class="fas fa-edit"></i>

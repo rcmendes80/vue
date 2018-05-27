@@ -48,6 +48,54 @@ module.exports = {
         loader: "file-loader"
       }
     ]
+    // loaders: [{
+    //     test: /\.vue$/,
+    //     loader: 'vue-loader'
+    //   },
+    //   {
+    //     test: /\.js$/,
+    //     loader: 'babel-loader',
+    //     exclude: /node_modules/
+    //   },
+    //   {
+    //     test: /\.json$/,
+    //     loader: 'json'
+    //   },
+    //   {
+    //     test: /\.css$/,
+    //     loader: 'vue-style-loader!css-loader'
+    //   },
+    //   {
+    //     test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+    //     loader: "url-loader?limit=10000&mimetype=application/font-woff"
+    //   },
+    //   {
+    //     test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+    //     loader: "url-loader?limit=10000&mimetype=application/font-woff"
+    //   },
+    //   {
+    //     test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+    //     loader: "url-loader?limit=10000&mimetype=application/octet-stream"
+    //   },
+    //   {
+    //     test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+    //     loader: "file-loader"
+    //   }, {
+    //     test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+    //     loader: "url-loader?limit=10000&mimetype=image/svg+xml"
+    //   },
+    //   {
+    //     test: /\.(png|jpg|gif|svg)$/,
+    //     loader: 'url-loader',
+    //     query: {
+    //       limit: 10000,
+    //       name: '[name].[ext]?[hash:7]'
+    //     }
+    //   }
+    // ]
+
+
+
   },
   resolve: {
     alias: {
@@ -64,6 +112,7 @@ module.exports = {
     hints: false
   },
   devtool: '#eval-source-map'
+
 }
 
 if (process.env.NODE_ENV === 'production') {

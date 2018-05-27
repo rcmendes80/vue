@@ -45,11 +45,9 @@ const mutations = {
   saveTodo: (state) => {
     let todo = state.editedTodo;
     let todoAsJSON = JSON.stringify(todo);
-    console.log("TODO: ", todoAsJSON)
     let clone = JSON.parse(todoAsJSON);
     clone.due = new Date(clone.due);
     todoAsJSON = JSON.stringify(clone);
-    console.log("TODO 2: ", todoAsJSON)
 
     if (todo.id == null || todo.id <= 0) {
 
@@ -59,7 +57,6 @@ const mutations = {
             state.list = [...state.list, response.data];
             state.editedTodo = {}
             state.editedTodo.due = this.getCurrentDateTime();
-            console.log("Due:", state.editedTodo.due);
           }
         })
         .catch(e => {
@@ -69,34 +66,20 @@ const mutations = {
       HTTP.put("todos/" + todo.id, todoAsJSON)
         .then(response => {
           let status = response.status;
-          if (status == 200 || status == 204) {
-            let index = getTodoIndexByID(state, id);
-            state.list[index] = todo;
-            console.log("Update com sucesso!")
+          if (status == "200" || status == "204") {
+            let index = state.list.findIndex((element) => {
+              return element.id == todo.id
+            });
+            state.list[index].completed = todo.completed;
+            state.list[index].name = todo.name;
+            state.list[index].due = todo.due;
+
           }
         })
         .catch(e => {
           state.errors.push(e)
         })
     }
-
-  },
-  updateTodoStatus: (state, {
-    todo,
-    isChecked
-  }) => {
-    todo.completed = isChecked;
-    let todoAsJSON = JSON.stringify(todo);
-    HTTP.put("todos/" + todo.id, todoAsJSON)
-      .then(response => {
-        if (response.status != 204) {
-          todo.completed = !isChecked;
-        }
-      })
-      .catch(e => {
-        state.errors.push(e)
-      })
-
 
   },
   deleteTodo: (state, id) => {
@@ -127,22 +110,6 @@ const mutations = {
   },
 
 }
-
-function getTodoIndexByID(state, id) {
-  return state.list.findIndex((element, i) => {
-    if (element.id === id) {
-      return true;
-    }
-
-    return false
-  });
-}
-
-
-
-
-
-
 
 
 // actions are functions that cause side effects and can involve

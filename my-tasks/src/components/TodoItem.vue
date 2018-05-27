@@ -5,11 +5,9 @@
   <td>{{item.name}}</td>
   <td>{{item.due | formatDatetime}}</td>
   <td>
-    <input
-        type="checkbox"
-        v-model="isChecked"
-        @change="toggleCheckedState"
-    />
+    <span class="icon is-small is-centered">
+      <i v-if="item.completed" class="fas fa-check-circle"></i>
+    </span>
   </td>
   <td>  
     <a class="button is-link is-outlined" @click="editTodo">
@@ -35,17 +33,9 @@ export default {
   name: "TodoItem",
   props: ["item", "index"],
   data() {
-    return {
-      isChecked: this.item.completed
-    };
+    return {};
   },
   methods: {
-    toggleCheckedState() {
-      this.$store.commit("updateTodoStatus", {
-        todo: this.item,
-        isChecked: this.isChecked
-      });
-    },
     deleteTodo() {
       let fnDelete = () => {
         this.$store.commit("deleteTodo", this.item.id);

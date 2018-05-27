@@ -64,7 +64,7 @@ export default {
       //   todo: this.item,
       //   updateFn: fnUpdate
       // });
-      this.$store.commit("updateTodo", this.item);
+      this.$store.commit("editTodo", this.item);
     }
   },
   filters: {

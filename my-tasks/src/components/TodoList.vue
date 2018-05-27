@@ -69,7 +69,7 @@ export default {
   },
   computed: {
     items() {
-      return this.$store.state.list;
+      return this.$store.getters.todoList;
     }
   }
 };

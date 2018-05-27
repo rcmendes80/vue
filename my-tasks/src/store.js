@@ -6,6 +6,14 @@ import {
 import axios from 'axios';
 Vue.use(Vuex)
 
+
+function getCurrentDateTime() {
+  let today = new Date();
+  let parsedDatetime = today.toISOString().slice(0, 16);
+
+  return parsedDatetime;
+}
+
 // root state object.
 // each Vuex instance is just a single state tree.
 const state = {
@@ -14,10 +22,11 @@ const state = {
   count: 0,
   editedTodo: {
     name: '',
-    due: new Date(),
+    due: getCurrentDateTime(),
     completed: false
   },
 }
+
 
 // mutations are operations that actually mutates the state.
 // each mutation handler gets the entire state tree as the
@@ -37,18 +46,43 @@ const mutations = {
         state.errors.push(e);
       });
   },
-  addTodo: (state, todo) => {
+  saveTodo: (state) => {
+    let todo = state.editedTodo;
     let todoAsJSON = JSON.stringify(todo);
-    HTTP.post(`todos`, todoAsJSON)
-      .then(response => {
-        if (response.status == 201) {
-          state.list = [...state.list, response.data];
-        }
-      })
-      .catch(e => {
-        state.errors.push(e)
-      })
+    console.log("TODO: ", todoAsJSON)
+    let clone = JSON.parse(todoAsJSON);
+    clone.due = new Date(clone.due);
+    todoAsJSON = JSON.stringify(clone);
+    console.log("TODO 2: ", todoAsJSON)
 
+    if (todo.id == null || todo.id <= 0) {
+
+      HTTP.post(`todos`, todoAsJSON)
+        .then(response => {
+          if (response.status == 201) {
+            state.list = [...state.list, response.data];
+            state.editedTodo = {}
+            state.editedTodo.due = this.getCurrentDateTime();
+            console.log("Due:", state.editedTodo.due);
+          }
+        })
+        .catch(e => {
+          state.errors.push(e)
+        })
+    } else {
+      HTTP.put("todos/" + todo.id, todoAsJSON)
+        .then(response => {
+          let status = response.status;
+          if (status == 200 || status == 204) {
+            let index = getTodoIndexByID(state, id);
+            state.list[index] = todo;
+            console.log("Update com sucesso!")
+          }
+        })
+        .catch(e => {
+          state.errors.push(e)
+        })
+    }
 
   },
   updateTodoStatus: (state, {
@@ -82,24 +116,20 @@ const mutations = {
         state.errors.push(e)
       })
   },
-  updateTodo: (state, id) => {
-    let index = getTodoIndexByID(state, id);
-
-    HTTP.put("todos/" + id)
-      .then(response => {
-        let status = response.status;
-        if (status == 200 || status == 204) {
-          //state.list.splice(index, 1);
-          console.log("Update com sucesso!")
-        }
-      })
-      .catch(e => {
-        state.errors.push(e)
-      })
-  },
   editTodo: (state, item) => {
-
+    let clone = JSON.parse(JSON.stringify(item));
+    state.editedTodo = clone;
   },
+  updateEditedTodoName: (state, value) => {
+    state.editedTodo.name = value;
+  },
+  updateEditedTodoDue: (state, value) => {
+    state.editedTodo.due = value;
+  },
+  updateEditedTodoCompleted: (state, value) => {
+    state.editedTodo.completed = value;
+  },
+
 }
 
 function getTodoIndexByID(state, id) {
@@ -156,7 +186,8 @@ const actions = {
 
 // getters are functions
 const getters = {
-  evenOrOdd: state => state.count % 2 === 0 ? 'even' : 'odd'
+  editedTodo: (state) => state.editedTodo,
+  todoList: (state) => state.list,
 }
 
 // A Vuex instance is created by combining the state, mutations, actions,

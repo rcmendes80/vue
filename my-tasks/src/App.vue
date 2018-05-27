@@ -14,7 +14,7 @@
     </section>
     <section class="section">
       <div class="container">  
-        <todo-add-form/>
+        <todo-add-edit-form/>
         <todo-list/>
       </div>
     </section>
@@ -23,14 +23,14 @@
 
 <script>
 import TodoList from "./components/TodoList";
-import TodoAddForm from "./components/TodoAddForm";
+import TodoAddEditForm from "./components/TodoAddEditForm";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "app",
   components: {
     "todo-list": TodoList,
-    "todo-add-form": TodoAddForm
+    "todo-add-edit-form": TodoAddEditForm
   },
   mounted() {
     this.$store.commit("loadTodoList");
@@ -38,11 +38,7 @@ export default {
   data() {
     return {};
   },
-  computed: {
-    items() {
-      return this.$store.state.list;
-    }
-  }
+  computed: {}
 };
 </script>
 

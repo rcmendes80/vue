@@ -4,9 +4,9 @@
   <td>{{item.id}}</td>
   <td>{{item.name}}</td>
   <td>{{item.due | formatDatetime}}</td>
-  <td>
-    <span class="icon is-small is-centered">
-      <i v-if="item.completed" class="fas fa-check-circle"></i>
+  <td class="centered-column">
+    <span class="icon is-small">
+      <i v-if="item.completed" class="far fa-check-circle is-primary"></i>
     </span>
   </td>
   <td>  
@@ -67,5 +67,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.centered-column {
+  text-align: center;
+}
 </style>

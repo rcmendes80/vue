@@ -9,8 +9,10 @@ Vue.use(Vuex)
 
 function getCurrentDateTime() {
   let today = new Date();
-  let parsedDatetime = today.toISOString().slice(0, 16);
-
+  let offset = today.getTimezoneOffset();
+  today = new Date(today.getTime() - (offset * 60000))
+  let parsedDatetime = today.toJSON().slice(0, 16);
+  console.log(parsedDatetime)
   return parsedDatetime;
 }
 
@@ -20,6 +22,7 @@ const state = {
   list: [],
   errors: [],
   editedTodo: {
+    id: 0,
     name: '',
     due: getCurrentDateTime(),
     completed: false
@@ -37,17 +40,19 @@ const mutations = {
     HTTP.get("todos")
       .then(response => {
         state.list = response.data;
+        state.list.forEach((element) => {
+          element.due = new Date(element.due);
+        });
       })
       .catch(e => {
         state.errors.push(e);
       });
   },
   saveTodo: (state) => {
-    let todo = state.editedTodo;
+    let todo = JSON.parse(JSON.stringify(state.editedTodo));
+    todo.due = new Date(todo.due + ":00Z");
+
     let todoAsJSON = JSON.stringify(todo);
-    let clone = JSON.parse(todoAsJSON);
-    clone.due = new Date(clone.due);
-    todoAsJSON = JSON.stringify(clone);
 
     if (todo.id == null || todo.id <= 0) {
 
@@ -96,8 +101,10 @@ const mutations = {
       })
   },
   editTodo: (state, item) => {
-    let clone = JSON.parse(JSON.stringify(item));
-    state.editedTodo = clone;
+    state.editedTodo.id = item.id;
+    state.editedTodo.name = item.name;
+    state.editedTodo.due = item.due.toISOString().slice(0, 16);
+    state.editedTodo.completed = item.completed;
   },
   updateEditedTodoName: (state, value) => {
     state.editedTodo.name = value;

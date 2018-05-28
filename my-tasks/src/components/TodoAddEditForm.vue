@@ -9,6 +9,10 @@
     <div class="field">
       <label class="label">Due</label>
       <div class="control">
+        <!--
+        <input class="input" :value="editedTodoDue" @input="updateDue" type="date" />
+        <input class="input" :value="editedTodoDue" @input="updateDue" type="time" />
+        -->
         <input class="input" :value="editedTodoDue" @input="updateDue" type="datetime-local" />
       </div>
     </div>
@@ -56,8 +60,8 @@ export default {
       return this.$store.getters.editedTodo;
     },
     editedTodoDue() {
-      let today = this.$store.getters.editedTodo.due + "";
-      let parsedDatetime = today.slice(0, 16);
+      let today = this.$store.getters.editedTodo.due; // + "";
+      let parsedDatetime = today; //.slice(0, 16);
       return parsedDatetime;
     }
   }

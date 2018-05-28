@@ -60,7 +60,7 @@ export default {
   filters: {
     formatDatetime(value) {
       if (!value) return "";
-      value = value.toString();
+      value = value.toJSON();
       return value.slice(0, 10) + " " + value.slice(11, 16);
     }
   }

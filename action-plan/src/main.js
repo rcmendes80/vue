@@ -5,8 +5,15 @@ import store from './store/store'
 
 import UserForm from './modules/users/UserForm.vue'
 import TaskForm from './modules/tasks/TaskForm.vue'
+import Home from './modules/home/Home.vue'
+
+Vue.use(VueRouter)
 
 const routes = [{
+    path: '/',
+    component: Home
+  },
+  {
     path: '/users',
     component: UserForm
   },

@@ -3,13 +3,26 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-
-const TASK_STATUS = [
-  {id:'CREATED', name:'Created'},
-  {id:'RUNNING', name:'Running'},
-  {id:'CANCELED', name:'Canceled'},
-  {id:'SUSPENDED', name:'Suspended'},
-  {id:'COMPLETED', name:'Completed'},
+const TASK_STATUS = [{
+    id: 'CREATED',
+    name: 'Created'
+  },
+  {
+    id: 'RUNNING',
+    name: 'Running'
+  },
+  {
+    id: 'CANCELED',
+    name: 'Canceled'
+  },
+  {
+    id: 'SUSPENDED',
+    name: 'Suspended'
+  },
+  {
+    id: 'COMPLETED',
+    name: 'Completed'
+  },
 ]
 
 function getStatusByID(id) {
@@ -53,22 +66,26 @@ const usersList = [{
   }
 ]
 
-const tasksList = [
-  {
-    id: 1, 
-    title: "Task 1", 
-    responsible: {
-      id: 1,
-      name: "Name 1",
-      username: "user 1",
-      email: "user1@email.com",
-      contact: "1 11 1 1111-1111"
-    }, 
-    description: "Description 1.", 
-    due: {date:'2018-01-01', time: '13:00'}, 
-    status: {id:'CREATED', name:'Created'},
-  }
-]
+const tasksList = [{
+  id: 1,
+  title: "Task 1",
+  responsible: {
+    id: 1,
+    name: "Name 1",
+    username: "user 1",
+    email: "user1@email.com",
+    contact: "1 11 1 1111-1111"
+  },
+  description: "Description 1.",
+  due: {
+    date: '2018-01-01',
+    time: '13:00'
+  },
+  status: {
+    id: 'CREATED',
+    name: 'Created'
+  },
+}]
 const state = {
   users: [],
   tasks: []
@@ -81,11 +98,11 @@ const getters = {
 }
 
 const actions = {
-  loadUsers : (context) => {
+  loadUsers: (context) => {
     console.log("Context:", context)
     context.commit("loadUsers", usersList)
   },
-  loadTasks : (context) => {
+  loadTasks: (context) => {
     console.log("Context:", context)
     context.commit("loadTasks", tasksList)
   },
@@ -102,10 +119,10 @@ const actions = {
 }
 
 const mutations = {
-  loadUsers : (state, list) => {
+  loadUsers: (state, list) => {
     state.users = list
   },
-  loadTasks : (state, list) => {
+  loadTasks: (state, list) => {
     state.tasks = list
   },
   saveTask: (state, task) => {
@@ -113,7 +130,7 @@ const mutations = {
       task.id = state.tasks.length + 1
       task.status = getStatusByID('CREATED')
     }
-      state.tasks = [...state.tasks, task]
+    state.tasks = [...state.tasks, task]
   },
   saveUser: (state, user) => {
     user.id = state.users.length + 1

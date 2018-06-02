@@ -58,6 +58,24 @@
                 </a>
             </p>
         </div>
+        <div class="card">
+            <header class="card-header">
+                <p class="card-header-title">
+                    User's List
+                </p>
+            </header>
+            <div class="card-content">
+                <ul>
+                    <li v-for="(user, index) in users" :key="index">
+                        <span style="font-weight:bold">ID: </span>{{user.id}},
+                        <span style="font-weight:bold">Name: </span>{{user.name}},
+                        <span style="font-weight:bold">Username: </span>{{user.username}},
+                        <span style="font-weight:bold">Email: </span>{{user.email}},
+                        <span style="font-weight:bold">Contact: </span>{{user.contact}}
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -65,28 +83,33 @@
 export default {
   name: "UserForm",
   data() {
-      return {
-          name : '',
-          username:'',
-          email: '',
-          contact: ''
-      }
+    return {
+      name: "",
+      username: "",
+      email: "",
+      contact: ""
+    };
   },
   mounted() {
-      this.$store.dispatch('loadUsers')
+    this.$store.dispatch("loadUsers");
   },
-  methods : {
-      save() {
-          let user = {
-            name : this.name,
-            username : this.username,
-            email : this.email,
-            contact : this.contact,
-          }
-          this.$store.dispatch('saveUser', user)
-      }
+  methods: {
+    save() {
+      let user = {
+        name: this.name,
+        username: this.username,
+        email: this.email,
+        contact: this.contact
+      };
+      this.$store.dispatch("saveUser", user);
+    }
+  },
+  computed: {
+    users() {
+      return this.$store.getters.users;
+    }
   }
-}
+};
 </script>
 <style scoped>
 </style>

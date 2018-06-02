@@ -43,45 +43,67 @@
                 </a>
             </p>
         </div>
+        <div class="card">
+            <header class="card-header">
+                <p class="card-header-title">
+                    Tasks's List
+                </p>
+            </header>
+            <div class="card-content">
+                <ul>
+                    <li v-for="(task, index) in tasks" :key="index">
+                        <span style="font-weight:bold">ID: </span>{{task.id}}, 
+                        <span style="font-weight:bold">Title: </span>{{task.title}}, 
+                        <span style="font-weight:bold">Responsible: </span>{{task.responsible.name}}, 
+                        <span style="font-weight:bold">Description: </span>{{task.description}}, 
+                        <span style="font-weight:bold">Due: </span>{{task.due.date}} | {{task.due.time}},
+                        <span style="font-weight:bold">Status: </span>{{task.status.name}}
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-import dateHandler from '../../utils/date-handler'
+import dateHandler from "../../utils/date-handler";
 export default {
-    name: "TaskForm",
-    data() {
-        return {
-            title: '',
-            responsible: '',
-            description: '',
-            due: {
-                date: '',
-                time: '12:00'
-            }
-        }
-    },
-    mounted() {
-        this.due = dateHandler.getCurrentDateTime()
-        this.$store.dispatch("loadTasks")
-    },
-    methods: {
-        save() {
-            let task = {
-                title: this.title,
-                responsible: this.responsible,
-                description: this.description,
-                due: this.due,
-            }
-            this.$store.dispatch('saveTask', task)
-        }
-    },
-    computed: {
-        users() {
-            return this.$store.getters.users
-        }
+  name: "TaskForm",
+  data() {
+    return {
+      title: "",
+      responsible: "",
+      description: "",
+      due: {
+        date: "",
+        time: "12:00"
+      }
+    };
+  },
+  mounted() {
+    this.due = dateHandler.getCurrentDateTime();
+    this.$store.dispatch("loadTasks");
+  },
+  methods: {
+    save() {
+      let task = {
+        title: this.title,
+        responsible: this.responsible,
+        description: this.description,
+        due: this.due
+      };
+      this.$store.dispatch("saveTask", task);
     }
-}
+  },
+  computed: {
+    users() {
+      return this.$store.getters.users;
+    },
+    tasks() {
+      return this.$store.getters.tasks;
+    }
+  }
+};
 </script>
 <style scoped>
 </style>

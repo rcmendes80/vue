@@ -9,6 +9,8 @@
           <h2 class="subtitle">
             A Simple way to manage tasks of your team! ;)
           </h2>
+          <router-link to="/users">Go to Users</router-link>
+          <router-link to="/tasks">Go to Tasks</router-link>
         </div>
         <div class="notification is-size-7 has-text-black">
           <div>Users List</div>
@@ -36,35 +38,27 @@
         </div>
       </div>
     </section>
-    <user-form></user-form>
-    <task-form></task-form>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import UserForm from './modules/users/UserForm.vue'
-import TaskForm from './modules/tasks/TaskForm.vue'
 export default {
   name: "app",
-  components: {
-    'user-form': UserForm,
-    'task-form': TaskForm,
-  },
+  components: {},
   data() {
-    return {
-    }
+    return {};
   },
   computed: {
     users() {
-      return this.$store.getters.users
+      return this.$store.getters.users;
     },
     tasks() {
-      return this.$store.getters.tasks
+      return this.$store.getters.tasks;
     }
   }
-}
+};
 </script>
 
 <style scoped>
-
 </style>

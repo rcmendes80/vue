@@ -13,12 +13,19 @@
       </div>
     </section>
     <div class="tabs">
-            <ul>
-              <li @click="activate('home')" :class="{'is-active': isHomeMenuActive}"><router-link to="/">Home</router-link></li>
-              <li @click="activate('users')" :class="{'is-active': isUsersMenuActive}"><router-link to="/users">Users</router-link></li>
-              <li @click="activate('tasks')" :class="{'is-active': isTasksMenuActive}"><router-link to="/tasks">Tasks</router-link></li>
-            </ul>
-          </div>
+      <ul>
+        <li @click="activate('home')" :class="{'is-active': isHomeMenuActive}">
+          <router-link to="/">Home</router-link>
+        </li>
+        <li @click="activate('users')" :class="{'is-active': isUsersMenuActive}">
+          <router-link to="/users">Users</router-link>
+        </li>
+        <li @click="activate('tasks')" :class="{'is-active': isTasksMenuActive}">
+          <router-link to="/tasks">Tasks</router-link>
+        </li>
+      </ul>
+
+    </div>
     <router-view></router-view>
   </div>
 </template>

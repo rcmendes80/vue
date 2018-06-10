@@ -70,28 +70,10 @@
                 </a>
             </p>
             <p class="control">
-                <a class="button is-light">
+                <a class="button is-light" @click="cancel">
                     Cancel
                 </a>
             </p>
-        </div>
-        <div class="card">
-            <header class="card-header">
-                <p class="card-header-title">
-                    User's List
-                </p>
-            </header>
-            <div class="card-content">
-                <ul>
-                    <li v-for="(user, index) in users" :key="index">
-                        <span style="font-weight:bold">ID: </span>{{user.id}},
-                        <span style="font-weight:bold">Name: </span>{{user.name}},
-                        <span style="font-weight:bold">Username: </span>{{user.username}},
-                        <span style="font-weight:bold">Email: </span>{{user.email}},
-                        <span style="font-weight:bold">Contact: </span>{{user.contact}}
-                    </li>
-                </ul>
-            </div>
         </div>
     </div>
 </template>
@@ -114,6 +96,9 @@ export default {
     this.$store.dispatch("loadUsers");
   },
   methods: {
+    cancel() {
+      this.$emit("onCloseModal");
+    },
     save() {
       if (name.trim().length < 1) {
         this.nameFieldInfo = "Field name is mandatory.";
@@ -127,6 +112,7 @@ export default {
         contact: this.contact
       };
       this.$store.dispatch("saveUser", user);
+      this.$emit("onCloseModal");
     },
     evaluateField(field, event) {
       let target = event.target;

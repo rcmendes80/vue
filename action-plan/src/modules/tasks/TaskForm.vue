@@ -83,6 +83,7 @@ export default {
   mounted() {
     this.due = dateHandler.getCurrentDateTime();
     this.$store.dispatch("loadTasks");
+    this.$store.dispatch("loadUsers");
   },
   methods: {
     save() {

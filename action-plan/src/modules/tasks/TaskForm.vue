@@ -26,6 +26,18 @@
             </div>
         </div>
         <div class="field">
+            <label class="label">Tags</label>
+            <div class="box">
+                <span class="tag" v-for="(tag, index) in tags" :key="index">
+                    {{tag}}
+                </span>
+                <input list="tagsList" type="text" placeholder="Inform tag" v-model="tag" @keyup.enter="saveTag"/>
+            </div>
+            <datalist id="tagsList">
+                <option v-for="(tag, index) in availableTags" :key="index" :value="tag"/>
+            </datalist>
+        </div>
+         <div class="field">
             <label class="label">Description</label>
             <div class="control">
                 <textarea class="textarea" placeholder="Inform details of the task" v-model="description" ></textarea>
@@ -77,13 +89,16 @@ export default {
       due: {
         date: "",
         time: "12:00"
-      }
+      },
+      tag: "",
+      tags: []
     };
   },
   mounted() {
     this.due = dateHandler.getCurrentDateTime();
     this.$store.dispatch("loadTasks");
     this.$store.dispatch("loadUsers");
+    this.$store.dispatch("loadTags");
   },
   methods: {
     save() {
@@ -94,6 +109,12 @@ export default {
         due: this.due
       };
       this.$store.dispatch("saveTask", task);
+    },
+    saveTag() {
+      if (this.tag.trim().length > 0) {
+        this.tags = [...this.tags, this.tag];
+        this.tag = "";
+      }
     }
   },
   computed: {
@@ -102,6 +123,19 @@ export default {
     },
     tasks() {
       return this.$store.getters.tasks;
+    },
+    availableTags() {
+      let persistedTags = this.$store.getters.tags;
+      let availableTags = persistedTags.filter(tag => {
+        for (let current in this.tags) {
+          if (this.tags[current] == tag) {
+            return false;
+          }
+        }
+
+        return true;
+      });
+      return availableTags;
     }
   }
 };

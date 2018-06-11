@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {
   usersList,
-  tasksList
+  tasksList,
+  tagsList
 }
 from './mock.js'
 
@@ -37,13 +38,15 @@ function getStatusByID(id) {
 const state = {
   users: [],
   currentUsersList: [],
-  tasks: []
+  tasks: [],
+  tags: []
 }
 
 const getters = {
   users: (state) => state.currentUsersList,
   tasks: (state) => state.tasks,
   taskStatusList: (state) => TASK_STATUS,
+  tags: (state) => state.tags
 }
 
 const actions = {
@@ -54,6 +57,10 @@ const actions = {
   loadTasks: (context) => {
     console.log("Context:", context)
     context.commit("loadTasks", tasksList)
+  },
+  loadTags: (context) => {
+    console.log("Context:", context)
+    context.commit("loadTags", tagsList)
   },
   saveTask: (context, task) => {
     console.log("Context:", context)
@@ -88,6 +95,9 @@ const mutations = {
   },
   loadTasks: (state, list) => {
     state.tasks = list
+  },
+  loadTags: (state, list) => {
+    state.tags = list
   },
   saveTask: (state, task) => {
     if (!task.id) {

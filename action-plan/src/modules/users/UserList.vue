@@ -33,34 +33,41 @@
                 
             </header>
             <div class="card-content">
-                <div class="content">
-                    <div class="columns">
-                        <div class="column"><p class="bd-notification is-primary">ID</p></div>
-                        <div class="column"><p class="bd-notification is-primary">Name</p></div>
-                        <div class="column"><p class="bd-notification is-primary">Username</p></div>
-                        <div class="column"><p class="bd-notification is-primary">Email</p></div>
-                        <div class="column"><p class="bd-notification is-primary">Contact</p></div>
-                        <div class="column">&nbsp;</div>
-                    </div>
-                </div>
-                <div class="columns"  v-for="(user, index) in users" :key="index">
-                    <div class="column">
-                        {{user.id}}
-                    </div>
-                    <div class="column">
-                        {{user.name}}
-                    </div>
-                    <div class="column">
-                        {{user.username}}
-                    </div>
-                    <div class="column">
-                        {{user.email}}
-                    </div>
-                    <div class="column">
-                        {{user.contact}}
-                    </div>
-                    <div><a class="delete" @click="showConfirmDeleteModal(user)"/></div>
-                </div>
+                <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th class="is-info">ID</th>
+                            <th class="is-info">Name</th>
+                            <th class="is-info">Username</th>
+                            <th class="is-info">Email</th>
+                            <th class="is-info">Contact</th>
+                            <th class="is-info">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr  v-for="(user, index) in users" :key="index">
+                            <td>
+                                {{user.id}}
+                            </td>
+                            <td>
+                                {{user.name}}
+                            </td>
+                            <td>
+                                {{user.username}}
+                            </td>
+                            <td>
+                                {{user.email}}
+                            </td>
+                            <td>
+                                {{user.contact}}
+                            </td>
+                            <td><a class="delete" @click="showConfirmDeleteModal(user)"/></td>
+                        </tr>
+                    </tbody>
+                    <tfoot> 
+                    
+                    </tfoot>
+                </table>
             </div>
             <confirm-cancel-modal title="Confirm user's deletion?" :body="confirmDeleteModalBody" :show="showDeleteUserModal" @confirm="confirmedUserDeletion" @cancel="cancelledUserDeletion" @close="closedConfirmDeleteModal"/>
         </div>

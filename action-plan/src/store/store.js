@@ -51,15 +51,12 @@ const getters = {
 
 const actions = {
   loadUsers: (context) => {
-    console.log("Context:", context)
     context.commit("loadUsers", usersList)
   },
   loadTasks: (context) => {
-    console.log("Context:", context)
     context.commit("loadTasks", tasksList)
   },
   loadTags: (context) => {
-    console.log("Context:", context)
     context.commit("loadTags", tagsList)
   },
   saveTask: (context, task) => {

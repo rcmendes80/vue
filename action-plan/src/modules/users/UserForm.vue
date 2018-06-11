@@ -3,8 +3,8 @@
         <div class="field">
             <label class="label">Name</label>
             <div class="control has-icons-right">
-                <input class="input" :class="{'is-danger': showWarningIconName}" required 
-                    type="text" placeholder="Input name" v-model="name" @blur="evaluateField('name', $event)">
+                <input id="nameInput" class="input" :class="{'is-danger': showWarningIconName}" required 
+                    type="text" placeholder="Input name" v-model="name" @keyup="evalNameInput">
                 <span class="icon is-small is-right" v-show="showOkIconName" >
                     <i class="fas fa-check"></i>
                 </span>
@@ -18,8 +18,8 @@
         <div class="field">
             <label class="label">Username</label>
             <div class="control has-icons-left has-icons-right">
-                <input class="input" :class="{'is-danger': showWarningIconUsername}" type="text" placeholder="Input username" 
-                    required v-model="username" @blur="evaluateField('username', $event)">
+                <input id="usernameInput" class="input" :class="{'is-danger': showWarningIconUsername}" type="text" placeholder="Input username" 
+                    required v-model="username" @keyup="evalUsernameInput" @blur="checkUsername">
                 <span class="icon is-small is-left">
                     <i class="fas fa-user"></i>
                 </span>
@@ -31,14 +31,14 @@
                 </span>
             </div>
             <p class="help is-danger">{{usernameFieldInfo}}</p>
-            <p class="help is-success">This username is available</p>
+            <p class="help is-success" v-show="usernameAvailableInfo">This username is available</p>
         </div>
 
         <div class="field">
             <label class="label">Email</label>
             <div class="control has-icons-left has-icons-right">
-                <input class="input" :class="{'is-danger': showWarningIconEmail}" type="email" 
-                    required placeholder="Input e-mail" v-model="email" @keyup="evaluateField('email', $event)">
+                <input id="emailInput" class="input" :class="{'is-danger': showWarningIconEmail}" type="email" 
+                    required placeholder="Input e-mail" v-model="email" @keyup="evalEmailInput">
                 <span class="icon is-small is-left">
                     <i class="fas fa-envelope"></i>
                 </span>
@@ -54,14 +54,19 @@
         <div class="field">
             <div class="label">Contact phone number</div>
             <div class="control has-icons-left has-icons-right">
-                <input class="input is-danger" type="tel" placeholder="+55 61 9 9999-9999" v-model="contact">
+                <input id="contactInput" class="input" :class="{'is-danger': showWarningIconContact}" type="tel" placeholder="55 61 99999-9999"
+                pattern="[0-9]{1,3} [0-9]{1,3} [0-9]{5}-[0-9]{4}" v-model="contact" @keyup="evalContactInput">
                 <span class="icon is-small is-left">
                     <i class="fas fa-phone-square"></i>
                 </span>
-                <span class="icon is-small is-right">
+                <span class="icon is-small is-right" v-show="showOkIconContact" >
+                    <i class="fas fa-check"></i>
+                </span>
+                <span class="icon is-small is-right" v-show="showWarningIconContact" >
                     <i class="fas fa-exclamation-triangle"></i>
                 </span>
             </div>
+            <p class="help is-danger">{{contactFieldInfo}}</p>
         </div>
         <div class="field is-grouped is-grouped-right">
             <p class="control">
@@ -89,19 +94,73 @@ export default {
       contact: "",
       nameFieldInfo: "",
       usernameFieldInfo: "",
-      emailFieldInfo: ""
+      emailFieldInfo: "",
+      contactFieldInfo: "",
+      usernameAvailableInfo: false
     };
   },
   mounted() {
     this.$store.dispatch("loadUsers");
   },
   methods: {
+    initData() {
+      this.name = "";
+      this.username = "";
+      this.email = "";
+      this.contact = "";
+      this.nameFieldInfo = "";
+      this.usernameFieldInfo = "";
+      this.emailFieldInfo = "";
+      this.contactFieldInfo = "";
+      this.usernameAvailableInfo = false;
+    },
     cancel() {
       this.$emit("onCloseModal");
     },
+    evalNameInput() {
+      let nameInput = document.getElementById("nameInput");
+      if (!nameInput.checkValidity()) {
+        this.nameFieldInfo = nameInput.validationMessage;
+      } else {
+        this.nameFieldInfo = "";
+      }
+    },
+    evalUsernameInput() {
+      let usernameInput = document.getElementById("usernameInput");
+      if (!usernameInput.checkValidity()) {
+        this.usernameFieldInfo = usernameInput.validationMessage;
+      } else {
+        this.usernameFieldInfo = "";
+      }
+    },
+    evalEmailInput() {
+      let emailInput = document.getElementById("emailInput");
+      if (!emailInput.checkValidity()) {
+        this.emailFieldInfo = emailInput.validationMessage;
+      } else {
+        this.emailFieldInfo = "";
+      }
+    },
+    evalContactInput() {
+      let contactInput = document.getElementById("contactInput");
+      if (!contactInput.checkValidity()) {
+        this.contactFieldInfo = contactInput.validationMessage;
+      } else {
+        this.contactFieldInfo = "";
+      }
+    },
     save() {
-      if (name.trim().length < 1) {
-        this.nameFieldInfo = "Field name is mandatory.";
+      this.evalNameInput();
+      this.evalUsernameInput();
+      this.evalEmailInput();
+      this.evalContactInput();
+      if (
+        //   this
+        this.nameFieldInfo.trim().length > 0 ||
+        this.usernameFieldInfo.trim().length > 0 ||
+        this.emailFieldInfo.trim().length > 0 ||
+        this.contactFieldInfo.trim().length > 0
+      ) {
         return;
       }
 
@@ -112,33 +171,11 @@ export default {
         contact: this.contact
       };
       this.$store.dispatch("saveUser", user);
+      this.initData();
       this.$emit("onCloseModal");
     },
-    evaluateField(field, event) {
-      let target = event.target;
-      switch (field) {
-        case "name":
-          if (!target.checkValidity()) {
-            this.nameFieldInfo = target.validationMessage;
-          } else {
-            this.nameFieldInfo = "";
-          }
-          break;
-        case "username":
-          if (!target.checkValidity()) {
-            this.usernameFieldInfo = target.validationMessage;
-          } else {
-            this.usernameFieldInfo = "";
-          }
-          break;
-        case "email":
-          if (!target.checkValidity()) {
-            this.emailFieldInfo = target.validationMessage;
-          } else {
-            this.emailFieldInfo = "";
-          }
-          break;
-      }
+    checkUsername() {
+      this.usernameAvailableInfo = this.username.length > 5;
     }
   },
   computed: {
@@ -168,6 +205,15 @@ export default {
       return (
         this.usernameFieldInfo.trim().length < 1 &&
         this.username.trim().length > 0
+      );
+    },
+    showWarningIconContact() {
+      return this.contactFieldInfo.trim().length > 0;
+    },
+    showOkIconContact() {
+      return (
+        this.contactFieldInfo.trim().length < 1 &&
+        this.contact.trim().length > 0
       );
     }
   }

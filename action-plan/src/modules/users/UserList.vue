@@ -3,10 +3,10 @@
         <div class="box">
             <div class="field has-addons">
                 <div class="control">
-                    <input class="input" type="search" placeholder="Find user">
+                    <input class="input" type="search" placeholder="Find user" v-model="query">
                 </div>
                 <div class="control">
-                    <a class="button is-info">
+                    <a class="button is-info" @click="search">
                         Search
                     </a>
                 </div>
@@ -18,9 +18,9 @@
                         </span>
                     </a>
                 </div>
-                <modal-form :title="modalTitle" :show="showModal" @confirm="confirmed" @cancel="cancelled" @close="closed">
+                <modal-form title="Add a user: Please, inform user's data" :show="showModalForm" @close="closedModalForm">
                     <template slot="form">
-                        <user-form @onCloseModal="closed"/>
+                        <user-form @onCloseModal="closedModalForm"/>
                     </template>
                 </modal-form>
             </div>
@@ -40,7 +40,7 @@
                         <div class="column"><p class="bd-notification is-primary">Username</p></div>
                         <div class="column"><p class="bd-notification is-primary">Email</p></div>
                         <div class="column"><p class="bd-notification is-primary">Contact</p></div>
-                        <div class="column"></div>
+                        <div class="column">&nbsp;</div>
                     </div>
                 </div>
                 <div class="columns"  v-for="(user, index) in users" :key="index">
@@ -59,9 +59,10 @@
                     <div class="column">
                         {{user.contact}}
                     </div>
-                    <div><a class="delete"></a></div>
+                    <div><a class="delete" @click="showConfirmDeleteModal(user)"/></div>
                 </div>
             </div>
+            <confirm-cancel-modal title="Confirm user's deletion?" :body="confirmDeleteModalBody" :show="showDeleteUserModal" @confirm="confirmedUserDeletion" @cancel="cancelledUserDeletion" @close="closedConfirmDeleteModal"/>
         </div>
     </div>
 </template>
@@ -69,18 +70,22 @@
 <script>
 import UserForm from "./UserForm.vue";
 import ModalForm from "../../components/ModalForm.vue";
+import ConfirmCancelModal from "../../components/ConfirmCancelModal.vue";
 
 export default {
   name: "UserList",
   components: {
     "user-form": UserForm,
-    "modal-form": ModalForm
+    "modal-form": ModalForm,
+    "confirm-cancel-modal": ConfirmCancelModal
   },
   data() {
     return {
-      showModal: false,
-      modalTitle: `Add a user: Please, inform user's data`,
-      modalDeleteFunction: () => {}
+      showModalForm: false,
+      showDeleteUserModal: false,
+      query: "",
+      confirmDeleteModalBody: "",
+      selectedUserForDeletion: null
     };
   },
   mounted() {
@@ -88,21 +93,33 @@ export default {
   },
   methods: {
     showFormModal() {
-      this.showModal = true;
+      this.showModalForm = true;
     },
-    showConfirmDeleteModal({ id, name, deleteFn }) {
-      this.modalDeleteFunction = deleteFn;
-      this.showModal = true;
+    showConfirmDeleteModal(user) {
+      let msg = `<div><span class="has-text-info has-text-weight-bold">ID: </span>${
+        user.id
+      }</div><div><span class="has-text-info has-text-weight-bold">Name:  </span>${
+        user.name
+      }</div>`;
+      this.confirmDeleteModalBody = msg;
+      this.selectedUserForDeletion = user;
+      this.showDeleteUserModal = true;
     },
-    confirmed() {
-      this.modalDeleteFunction();
-      this.closed();
+    confirmedUserDeletion() {
+      this.$store.dispatch("deleteUserById", this.selectedUserForDeletion.id);
+      this.closedConfirmDeleteModal();
     },
-    closed() {
-      this.showModal = false;
+    closedModalForm() {
+      this.showModalForm = false;
     },
-    cancelled() {
-      this.closed();
+    closedConfirmDeleteModal() {
+      this.showDeleteUserModal = false;
+    },
+    cancelledUserDeletion() {
+      this.closedConfirmDeleteModal();
+    },
+    search() {
+      this.$store.dispatch("searchUser", this.query.trim());
     }
   },
   computed: {

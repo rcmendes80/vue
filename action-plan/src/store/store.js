@@ -36,11 +36,12 @@ function getStatusByID(id) {
 
 const state = {
   users: [],
+  currentUsersList: [],
   tasks: []
 }
 
 const getters = {
-  users: (state) => state.users,
+  users: (state) => state.currentUsersList,
   tasks: (state) => state.tasks,
   taskStatusList: (state) => TASK_STATUS,
 }
@@ -63,12 +64,27 @@ const actions = {
     console.log("Context:", context)
     console.log("User: ", user)
     context.commit("saveUser", user)
+  },
+  searchUser: (context, query) => {
+    context.commit('loadUsers', context.state.users.filter(val => {
+      let lowCaseName = val.name.toLowerCase()
+      let lowCaseUsername = val.username.toLowerCase()
+      let lowCaseEmail = val.email.toLowerCase()
+      let lowCaseQuery = query.trim().toLowerCase()
+      return (lowCaseName.indexOf(lowCaseQuery) >= 0) || (lowCaseUsername.indexOf(lowCaseQuery) >= 0) || (lowCaseEmail.indexOf(lowCaseQuery) >= 0)
+    }))
+  },
+  deleteUserById: (context, id) => {
+    context.commit("deleteUserById", id)
   }
 }
 
 const mutations = {
   loadUsers: (state, list) => {
-    state.users = list
+    if (state.users.length < 1) {
+      state.users = list
+    }
+    state.currentUsersList = list
   },
   loadTasks: (state, list) => {
     state.tasks = list
@@ -83,6 +99,12 @@ const mutations = {
   saveUser: (state, user) => {
     user.id = state.users.length + 1
     state.users = [...state.users, user]
+  },
+  deleteUserById: (state, id) => {
+    let index = state.users.findIndex((user) => {
+      return (user.id == id);
+    });
+    state.users.splice(index, 1)
   }
 }
 

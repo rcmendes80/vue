@@ -28,8 +28,12 @@
         <div class="field">
             <label class="label">Tags</label>
             <div class="box">
-                <span class="tag" v-for="(tag, index) in tags" :key="index">
-                    {{tag}}
+                <span class="tag is-info" v-for="(tag, index) in tags" :key="index" style="margin:4px;">
+                    [{{index}}]:{{tag}}
+                    &nbsp;
+                    <span @click="removeTag({tag})">
+                    <i class="far fa-times-circle"/>
+                    </span>
                 </span>
                 <input list="tagsList" type="text" placeholder="Inform tag" v-model="tag" @keyup.enter="saveTag"/>
             </div>
@@ -115,6 +119,12 @@ export default {
         this.tags = [...this.tags, this.tag];
         this.tag = "";
       }
+    },
+    removeTag(tag) {
+      let index = this.tags.findIndex(element => {
+        return tag.tag == element;
+      });
+      this.tags.splice(index, 1);
     }
   },
   computed: {

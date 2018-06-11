@@ -63,13 +63,9 @@ const actions = {
     context.commit("loadTags", tagsList)
   },
   saveTask: (context, task) => {
-    console.log("Context:", context)
-    console.log("Task: ", task)
     context.commit("saveTask", task)
   },
   saveUser: (context, user) => {
-    console.log("Context:", context)
-    console.log("User: ", user)
     context.commit("saveUser", user)
   },
   searchUser: (context, query) => {

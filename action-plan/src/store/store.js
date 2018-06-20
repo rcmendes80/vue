@@ -76,6 +76,9 @@ const actions = {
   },
   deleteUserById: (context, id) => {
     context.commit("deleteUserById", id)
+  },
+  deleteTaskById: (context, id) => {
+    context.commit("deleteTaskById", id)
   }
 }
 
@@ -108,6 +111,12 @@ const mutations = {
       return (user.id == id);
     });
     state.users.splice(index, 1)
+  },
+  deleteTaskById: (state, id) => {
+    let index = state.tasks.findIndex((task) => {
+      return (task.id == id);
+    });
+    state.tasks.splice(index, 1)
   }
 }
 

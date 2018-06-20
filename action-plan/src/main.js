@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 import store from './store/store'
 
 import UserList from './modules/users/UserList.vue'
-import TaskForm from './modules/tasks/TaskForm.vue'
+import TaskList from './modules/tasks/TaskList.vue'
 import Home from './modules/home/Home.vue'
 
 Vue.use(VueRouter)
@@ -20,7 +20,7 @@ const routes = [{
 
   {
     path: '/tasks',
-    component: TaskForm
+    component: TaskList
   }
 ]
 

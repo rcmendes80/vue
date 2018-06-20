@@ -3,7 +3,7 @@
         <div class="box">
             <div class="field has-addons">
                 <div class="control">
-                    <input class="input" type="search" placeholder="Find user" v-model="query">
+                    <input class="input" type="search" placeholder="Find task" v-model="query">
                 </div>
                 <div class="control">
                     <a class="button is-info" @click="search">
@@ -12,15 +12,15 @@
                 </div>
                 <div class="has-icons-right">
                     <a class="button is-primary" @click="showFormModal">
-                        <span>Add an User</span>
+                        <span>Add an Task</span>
                         <span class="icon is-small is-right">
                             <i class="fas fa-plus is-size-5"></i>
                         </span>
                     </a>
                 </div>
-                <modal-form title="Add a user: Please, inform user's data" :show="showModalForm" @close="closedModalForm">
+                <modal-form title="Add a task: Please, inform task's data" :show="showModalForm" @close="closedModalForm">
                     <template slot="form">
-                        <user-form @onCloseModal="closedModalForm"/>
+                        <task-form @onCloseModal="closedModalForm"/>
                     </template>
                 </modal-form>
             </div>
@@ -28,7 +28,7 @@
         <div class="card">
             <header class="card-header">
                 <p class="card-header-title">
-                    User's list result
+                    Task's list result
                 </p>
                 
             </header>
@@ -37,31 +37,35 @@
                     <thead>
                         <tr>
                             <th class="is-info">ID</th>
-                            <th class="is-info">Name</th>
-                            <th class="is-info">Username</th>
-                            <th class="is-info">Email</th>
-                            <th class="is-info">Contact</th>
+                            <th class="is-info">Title</th>
+                            <th class="is-info">Responsible</th>
+                            <th class="is-info">Due</th>
+                            <th class="is-info">Description</th>
+                            <th class="is-info">Status</th>
                             <th class="is-info">&nbsp;</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr  v-for="(user, index) in users" :key="index">
+                        <tr  v-for="(task, index) in tasks" :key="index">
                             <td>
-                                {{user.id}}
+                                {{task.id}}
                             </td>
                             <td>
-                                {{user.name}}
+                                {{task.title}}
                             </td>
                             <td>
-                                {{user.username}}
+                                <span :title="task.responsible.name">{{task.responsible.username}}</span>
                             </td>
                             <td>
-                                {{user.email}}
+                                {{(task.due.date + " " + task.due.time)| convertDate}} {{task.due.time}}
                             </td>
                             <td>
-                                {{user.contact}}
+                                {{task.description}}
                             </td>
-                            <td><a class="delete" @click="showConfirmDeleteModal(user)"/></td>
+                            <td>
+                                {{task.status.name}}
+                            </td>
+                            <td><a class="delete" @click="showConfirmDeleteModal(task)"/></td>
                         </tr>
                     </tbody>
                     <tfoot> 
@@ -69,70 +73,76 @@
                     </tfoot>
                 </table>
             </div>
-            <confirm-cancel-modal title="Confirm user's deletion?" :body="confirmDeleteModalBody" :show="showDeleteUserModal" @confirm="confirmedUserDeletion" @cancel="cancelledUserDeletion" @close="closedConfirmDeleteModal"/>
+            <confirm-cancel-modal title="Confirm task's deletion?" :body="confirmDeleteModalBody" :show="showDeleteTaskModal" @confirm="confirmedTaskDeletion" @cancel="cancelledTaskDeletion" @close="closedConfirmDeleteModal"/>
         </div>
     </div>
 </template>
 
 <script>
-import UserForm from "./UserForm.vue";
+import TaskForm from "./TaskForm.vue";
 import ModalForm from "../../components/ModalForm.vue";
 import ConfirmCancelModal from "../../components/ConfirmCancelModal.vue";
 
 export default {
-  name: "UserList",
+  name: "TaskList",
   components: {
-    "user-form": UserForm,
+    "task-form": TaskForm,
     "modal-form": ModalForm,
     "confirm-cancel-modal": ConfirmCancelModal
   },
   data() {
     return {
       showModalForm: false,
-      showDeleteUserModal: false,
+      showDeleteTaskModal: false,
       query: "",
       confirmDeleteModalBody: "",
-      selectedUserForDeletion: null
+      selectedTaskForDeletion: null
     };
   },
   mounted() {
-    this.$store.dispatch("loadUsers");
+    this.$store.dispatch("loadTasks");
   },
   methods: {
     showFormModal() {
       this.showModalForm = true;
     },
-    showConfirmDeleteModal(user) {
+    showConfirmDeleteModal(task) {
       let msg = `<div><span class="has-text-info has-text-weight-bold">ID: </span>${
-        user.id
+        task.id
       }</div><div><span class="has-text-info has-text-weight-bold">Name:  </span>${
-        user.name
+        task.name
       }</div>`;
       this.confirmDeleteModalBody = msg;
-      this.selectedUserForDeletion = user;
-      this.showDeleteUserModal = true;
+      this.selectedTaskForDeletion = task;
+      this.showDeleteTaskModal = true;
     },
-    confirmedUserDeletion() {
-      this.$store.dispatch("deleteUserById", this.selectedUserForDeletion.id);
+    confirmedTaskDeletion() {
+      this.$store.dispatch("deleteTaskById", this.selectedTaskForDeletion.id);
       this.closedConfirmDeleteModal();
     },
     closedModalForm() {
       this.showModalForm = false;
     },
     closedConfirmDeleteModal() {
-      this.showDeleteUserModal = false;
+      this.showDeleteTaskModal = false;
     },
-    cancelledUserDeletion() {
+    cancelledTaskDeletion() {
       this.closedConfirmDeleteModal();
     },
     search() {
-      this.$store.dispatch("searchUser", this.query.trim());
+      this.$store.dispatch("searchTask", this.query.trim());
     }
   },
   computed: {
-    users() {
-      return this.$store.getters.users;
+    tasks() {
+      return this.$store.getters.tasks;
     }
+  },
+  filters: {
+      convertDate(datetime) {
+          console.log(datetime)
+          return new Date(datetime).toLocaleDateString()
+      }
   }
 };
 </script>

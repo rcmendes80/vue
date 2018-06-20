@@ -28,14 +28,15 @@
         <div class="field">
             <label class="label">Tags</label>
             <div class="box">
+                <input type="search" list="tagsList" placeholder="Inform tag" v-model="tag" @keyup.enter="saveTag"/>
                 <span class="tag is-info" v-for="(tag, index) in tags" :key="index" style="margin:4px;">
-                    [{{index}}]:{{tag}}
+                    {{tag}}
                     &nbsp;
                     <span @click="removeTag({tag})">
                     <i class="far fa-times-circle"/>
                     </span>
                 </span>
-                <input list="tagsList" type="text" placeholder="Inform tag" v-model="tag" @keyup.enter="saveTag"/>
+                
             </div>
             <datalist id="tagsList">
                 <option v-for="(tag, index) in availableTags" :key="index" :value="tag"/>
@@ -58,25 +59,6 @@
                     Cancel
                 </a>
             </p>
-        </div>
-        <div class="card">
-            <header class="card-header">
-                <p class="card-header-title">
-                    Tasks's List
-                </p>
-            </header>
-            <div class="card-content">
-                <ul>
-                    <li v-for="(task, index) in tasks" :key="index">
-                        <span style="font-weight:bold">ID: </span>{{task.id}}, 
-                        <span style="font-weight:bold">Title: </span>{{task.title}}, 
-                        <span style="font-weight:bold">Responsible: </span>{{task.responsible.name}}, 
-                        <span style="font-weight:bold">Description: </span>{{task.description}}, 
-                        <span style="font-weight:bold">Due: </span>{{task.due.date}} | {{task.due.time}},
-                        <span style="font-weight:bold">Status: </span>{{task.status.name}}
-                    </li>
-                </ul>
-            </div>
         </div>
     </div>
 </template>
@@ -115,10 +97,14 @@ export default {
       this.$store.dispatch("saveTask", task);
     },
     saveTag() {
-      if (this.tag.trim().length > 0) {
+      let exists = this.tags.filter((v) => v.toLowerCase() == this.tag.toLowerCase()).length > 0
+        
+      if (!exists && this.tag.trim().length > 0) {
         this.tags = [...this.tags, this.tag];
-        this.tag = "";
       }
+
+      this.tag = "";
+      
     },
     removeTag(tag) {
       let index = this.tags.findIndex(element => {
